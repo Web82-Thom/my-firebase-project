@@ -99,7 +99,7 @@ class _SignupWidgetState extends State<SignupWidget> {
               onSaved: (value) {
                 setState(() {
                   _nameField = value as TextEditingController;
-                  authController.newUserUsername = value!;
+                  // authController.newUserUsername = value!;
                 });
               },
             ),
@@ -132,7 +132,7 @@ class _SignupWidgetState extends State<SignupWidget> {
               onSaved: (value) {
                 setState(() {
                   _emailField = value as TextEditingController;
-                  authController.newUserEmail = value!;
+                  authController.emailController.text = value!;
                 });
               },
             ),
@@ -167,7 +167,7 @@ class _SignupWidgetState extends State<SignupWidget> {
               onSaved: (value) {
                 setState(() {
                   _passwordField = value as TextEditingController;
-                  authController.newUserPassword = value!;
+                  authController.passwordController.text = value!;
                 });
               },
             ),
@@ -187,11 +187,9 @@ class _SignupWidgetState extends State<SignupWidget> {
                 ),
               ),
               onPressed: () {
-                Get.toNamed(Routes.HOME);
-                print("imageFile " + _userImageFile.toString());
-                print(_nameField.text);
-                print(_emailField.text);
-                print(_passwordField.text);
+                // Get.toNamed(Routes.HOME);
+                print(authController.passwordController.text);
+                print(authController.emailController.text);
                 final isValid = _formKey.currentState!.validate();
                 // if (_userImageFile != null) {
                 //   // authController.userSignUp(

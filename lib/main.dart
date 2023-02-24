@@ -17,16 +17,19 @@ Future<void> main()async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+   MyApp({super.key});
+  
+  final navigatorKey = GlobalKey<NavigatorState>();
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      navigatorKey: navigatorKey,
       title: 'My firebase project',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -47,11 +50,13 @@ class MyApp extends StatelessWidget {
         builder: (ctx, userSnapshot) {
           if (userSnapshot.connectionState == ConnectionState.waiting) {
             return SplashScreen();
-          }
-          if (userSnapshot.hasData) {
+          } else if (userSnapshot.hasError){
+            return const Center(child:Text('Une erreur est intervenue !'));
+          } if (userSnapshot.hasData) {
             return HomeView();
+          } else{
+            return const AuthView();
           }
-          return const AuthView();
         },
       ),
       routes: {

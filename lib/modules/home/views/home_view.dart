@@ -23,6 +23,7 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text("Thom App's"),
         actions: [
           DropdownButton(
@@ -76,7 +77,12 @@ class _HomeViewState extends State<HomeView> {
         ],
       ),
       // drawer: CustomDrawer(),
-      body: Center(child: Text('Hello ${user!.email} !')),
+      body: Center(
+        child: 
+        user!.email != null  ?
+        Text('Hello ${user!.email} !'): 
+        Text('Hello inconnue !')
+        ),
     );
   }
 }

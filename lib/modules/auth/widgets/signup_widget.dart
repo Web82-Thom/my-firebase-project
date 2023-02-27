@@ -27,10 +27,7 @@ class _SignupWidgetState extends State<SignupWidget> {
   Color _color2 = Color(0xff777777);
 
   final formKey = GlobalKey<FormState>();
-  TextEditingController _nameField = TextEditingController();
-  TextEditingController _emailField = TextEditingController();
-  TextEditingController _passwordField = TextEditingController();
-
+  
   void _toggleObscureText() {
     setState(() {
       _obscureText = !_obscureText;
@@ -76,42 +73,40 @@ class _SignupWidgetState extends State<SignupWidget> {
               style: TextStyle(
                   fontSize: 14, fontWeight: FontWeight.bold, color: _mainColor),
             ),
+            // TextFormField(
+            //   key: ValueKey('userName'),
+            //   controller: _nameField,
+            //   keyboardType: TextInputType.text,
+            //   style: TextStyle(color: _color1),
+            //   decoration: InputDecoration(
+            //     focusedBorder: UnderlineInputBorder(
+            //         borderSide: BorderSide(color: _mainColor, width: 2.0)),
+            //     enabledBorder: UnderlineInputBorder(
+            //       borderSide: BorderSide(color: _underlineColor),
+            //     ),
+            //     labelText: "Nom d'utilisateur",
+            //     labelStyle: TextStyle(color: _color2),
+            //   ),
+            //   validator: (value) {
+            //     if (value!.isEmpty || value.length < 4) {
+            //       return 'Minimum 4 caractères';
+            //     }
+            //     return null;
+            //   },
+            //   onSaved: (value) {
+            //     setState(() {
+            //       _nameField = value as TextEditingController;
+            //       // authController.newUserUsername = value!;
+            //     });
+            //   },
+            // ),
+            // SizedBox(
+            //   height: 20,
+            // ),
+           
             TextFormField(
-              key: ValueKey('userName'),
-              controller: _nameField,
-              keyboardType: TextInputType.text,
-              style: TextStyle(color: _color1),
-              decoration: InputDecoration(
-                focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: _mainColor, width: 2.0)),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: _underlineColor),
-                ),
-                labelText: "Nom d'utilisateur",
-                labelStyle: TextStyle(color: _color2),
-              ),
-              validator: (value) {
-                if (value!.isEmpty || value.length < 4) {
-                  return 'Minimum 4 caractères';
-                }
-                return null;
-              },
-              onSaved: (value) {
-                setState(() {
-                  _nameField = value as TextEditingController;
-                  // authController.newUserUsername = value!;
-                });
-              },
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            TextFormField(
-              key: ValueKey('email'),
-              controller: _emailField,
+              key: ValueKey('emailController'),
+              controller: authController.emailController,
               keyboardType: TextInputType.emailAddress,
               style: TextStyle(color: _color1),
               decoration: InputDecoration(
@@ -123,15 +118,14 @@ class _SignupWidgetState extends State<SignupWidget> {
                 labelText: 'Email',
                 labelStyle: TextStyle(color: _color2),
               ),
-              validator: (value) {
-                if (value!.isEmpty || !value.contains('@')) {
+              validator: (email) {
+                if (email!.isEmpty || !email.contains('@') ) {
                   return 'Entrer un adresse email valide';
                 }
                 return null;
               },
               onSaved: (value) {
                 setState(() {
-                  _emailField = value as TextEditingController;
                   authController.emailController.text = value!;
                 });
               },
@@ -141,7 +135,7 @@ class _SignupWidgetState extends State<SignupWidget> {
             ),
             TextFormField(
               key: ValueKey('password'),
-              controller: _passwordField,
+              controller: authController.passwordController,
               obscureText: _obscureText,
               style: TextStyle(color: _color1),
               decoration: InputDecoration(
@@ -166,11 +160,45 @@ class _SignupWidgetState extends State<SignupWidget> {
               },
               onSaved: (value) {
                 setState(() {
-                  _passwordField = value as TextEditingController;
                   authController.passwordController.text = value!;
                 });
               },
             ),
+            SizedBox(height: 20,),
+            // TextFormField(
+            //   key: ValueKey('Confirmer le mot de passe'),
+            //   controller: authController.confirmPasswordController,
+            //   obscureText: _obscureText,
+            //   style: TextStyle(color: _color1),
+            //   decoration: InputDecoration(
+            //     focusedBorder: UnderlineInputBorder(
+            //         borderSide: BorderSide(color: _mainColor, width: 2.0)),
+            //     enabledBorder: UnderlineInputBorder(
+            //       borderSide: BorderSide(color: _underlineColor),
+            //     ),
+            //     labelText: 'Confirmer le mot de passe',
+            //     labelStyle: TextStyle(color: _color2),
+            //     suffixIcon: IconButton(
+            //         icon: Icon(_iconVisible, color: Colors.grey[400], size: 20),
+            //         onPressed: () {
+            //           _toggleObscureText();
+            //         }),
+            //   ),
+            //   validator: (value) {
+            //     if (value!.isEmpty || value.length < 7 ) {
+            //       return 'Mot de passe trop court (7 min)';
+            //     }
+            //     if (value == authController.emailController.text) {
+            //       return 'Mot de passe non identique';
+            //     }
+            //     return null;
+            //   },
+            //   onSaved: (value) {
+            //     setState(() {
+            //       authController.confirmPasswordController.text = value!;
+            //     });
+            //   },
+            // ),
             SizedBox(
               height: 40,
             ),
@@ -187,10 +215,12 @@ class _SignupWidgetState extends State<SignupWidget> {
                 ),
               ),
               onPressed: () {
-                // Get.toNamed(Routes.HOME);
-                print(authController.passwordController.text);
                 print(authController.emailController.text);
+                print(authController.passwordController.text);
+                // print(authController.confirmPasswordController.text);
                 final isValid = _formKey.currentState!.validate();
+                authController.signUp();
+
                 // if (_userImageFile != null) {
                 //   // authController.userSignUp(
                 //   //   name: _nameField.text,

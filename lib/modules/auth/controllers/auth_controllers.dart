@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:myfirebaseproject/main.dart';
+import 'package:myfirebaseproject/ressources/widgets/snackBar_auth.dart';
 import 'package:myfirebaseproject/ressources/widgets/splash_screen.dart';
 import 'package:myfirebaseproject/routes/app_pages.dart';
 
@@ -20,38 +21,66 @@ class AuthController with ChangeNotifier {
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
+  // final confirmPasswordController = TextEditingController();
 
-  Future<void> signIn(BuildContext context) async{
+  void userState() {
+    auth.authStateChanges().listen((User? user) {
+      if (user == null) {
+        print("User is currently signed out");
+        Get.toNamed(Routes.AUTH);
+      } else{
+        Get.toNamed(Routes.HOME);
+      }
+    });
+  }
+  Future<void> signIn() async{
     try{
       await auth.signInWithEmailAndPassword(
       email: emailController.text, 
       password: passwordController.text,
-    );
+    ).whenComplete(() => userState());
     } on FirebaseAuthException catch (e) {
       print(e);
+      Utils.showSnackBar(e.message);
     }
   }
   
-  Future<void> signOut() async{
+  Future signOut() async{
     await FirebaseAuth.instance.signOut();
+    Get.toNamed(Routes.AUTH);
+  }
+
+  Future<void> signUp() async{
+    try{
+      await auth.createUserWithEmailAndPassword(
+      email: emailController.text, 
+      password: passwordController.text,
+    ).whenComplete(() => userState());
+    } on FirebaseAuthException catch (e) {
+      print(e);
+      Utils.showSnackBar(e.message);
+    }
   }
   
   @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
+    notifyListeners();
     super.dispose();
   }
 
   @override
   void initState() {
-   
+    userState();
+   notifyListeners();
     initState();
   }
 
   @override
   void onReady() {
+   notifyListeners();
+
     onReady();
   }
 

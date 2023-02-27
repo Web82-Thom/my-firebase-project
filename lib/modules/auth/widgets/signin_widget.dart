@@ -157,7 +157,7 @@ class _SigninWidgetState extends State<SigninWidget> {
                   print('controller ' + authController.emailController.text);
                   print('controller ' + authController.passwordController.text);
                   final isValid = _formKey.currentState!.validate();
-                  authController.signIn(context);
+                  authController.signIn();
                 },
                 child: const Padding(
                   padding: EdgeInsets.symmetric(vertical: 5),

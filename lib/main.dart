@@ -7,6 +7,7 @@ import 'package:myfirebaseproject/modules/auth/views/auth_view.dart';
 import 'package:myfirebaseproject/modules/auth/widgets/signin_widget.dart';
 import 'package:myfirebaseproject/modules/auth/widgets/signup_widget.dart';
 import 'package:myfirebaseproject/modules/home/views/home_view.dart';
+import 'package:myfirebaseproject/ressources/widgets/snackBar_auth.dart';
 import 'package:myfirebaseproject/ressources/widgets/splash_screen.dart';
 import 'package:myfirebaseproject/routes/app_pages.dart';
 
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      scaffoldMessengerKey: Utils.messengerKey,
       navigatorKey: navigatorKey,
       title: 'My firebase project',
       theme: ThemeData(

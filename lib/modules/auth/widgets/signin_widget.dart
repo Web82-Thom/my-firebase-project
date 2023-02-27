@@ -16,8 +16,6 @@ class _SigninWidgetState extends State<SigninWidget> {
   IconData _iconVisible = Icons.visibility_off;
 
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _emailField = TextEditingController();
-  TextEditingController _passwordField = TextEditingController();
 
   Color _underlineColor = Color(0xFFCCCCCC);
   Color _mainColor = Color(0xFF07ac12);
@@ -66,8 +64,8 @@ class _SigninWidgetState extends State<SigninWidget> {
                 fontSize: 14, fontWeight: FontWeight.bold, color: _mainColor),
             ),
             TextFormField(
-              key: ValueKey('_emailField'),
-              controller: _emailField,
+              key: ValueKey('emailController'),
+              controller: authController.emailController,
               keyboardType: TextInputType.emailAddress,
               style: TextStyle(color: _color1),
               decoration: InputDecoration(
@@ -89,15 +87,15 @@ class _SigninWidgetState extends State<SigninWidget> {
               onSaved: (value) {
                 final isValid = _formKey.currentState!.validate();
 
-                _emailField = value as TextEditingController;
+                authController.emailController.text = value!;
               },
             ),
             SizedBox(
               height: 20,
             ),
             TextFormField(
-              key: ValueKey('_passwordField'),
-              controller: _passwordField,
+              key: ValueKey('passwordController'),
+              controller: authController.passwordController,
               obscureText: _obscureText,
               style: TextStyle(color: _color1),
               decoration: InputDecoration(
@@ -121,7 +119,7 @@ class _SigninWidgetState extends State<SigninWidget> {
                 return null;
               },
               onSaved: (value) {
-                _passwordField = value as TextEditingController;
+                authController.passwordController.text = value!;
               },
             ),
             SizedBox(
@@ -156,14 +154,10 @@ class _SigninWidgetState extends State<SigninWidget> {
                   )),
                 ),
                 onPressed: () {
-                  print(_emailField.text);
-                  print(_passwordField.text);
+                  print('controller ' + authController.emailController.text);
+                  print('controller ' + authController.passwordController.text);
                   final isValid = _formKey.currentState!.validate();
-                  Get.toNamed(Routes.HOME);
-                  // authController.userSignIn(
-                  //   email: _emailField.text,
-                  //   password: _passwordField.text,
-                  // );
+                  authController.signIn(context);
                 },
                 child: const Padding(
                   padding: EdgeInsets.symmetric(vertical: 5),

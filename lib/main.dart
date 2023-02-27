@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:myfirebaseproject/modules/auth/views/auth_view.dart';
+import 'package:myfirebaseproject/modules/auth/widgets/forgot_password.dart';
 import 'package:myfirebaseproject/modules/auth/widgets/signin_widget.dart';
 import 'package:myfirebaseproject/modules/auth/widgets/signup_widget.dart';
 import 'package:myfirebaseproject/modules/home/views/home_view.dart';
@@ -43,7 +44,8 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [
-        Locale('fr', 'FR'), // Français, no country code
+        Locale('fr', 'FR'),
+        Locale('en, En'), // Français, no country code
       ],
       debugShowCheckedModeBanner: false,
       
@@ -66,6 +68,7 @@ class MyApp extends StatelessWidget {
         "/auth": (context) => const AuthView(),
         "/signin": (context) =>  SigninWidget(),
         "/signup": (context) =>  SignupWidget(),
+        "/forgot_password": (context) => ForgotPassword(),
       },
     );
   }

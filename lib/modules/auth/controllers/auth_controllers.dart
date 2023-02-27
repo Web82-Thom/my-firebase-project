@@ -41,7 +41,17 @@ class AuthController with ChangeNotifier {
     ).whenComplete(() => userState());
     } on FirebaseAuthException catch (e) {
       print(e);
-      Utils.showSnackBar(e.message);
+      if (e.message == 'There is no user record corresponding to this identifier. The user may have been deleted.'){ 
+        Utils.showSnackBar("Email inconnu dans la base de donnée où l'utilsateur a été supprimer. Veuiller créer un compte."); 
+      } else if (e.message == "The email address is badly formatted."){ 
+        Utils.showSnackBar("Email invalide, veuillez entrer un email au bon format."); 
+      } else if (e.message == "Given String is empty or null"){ 
+        Utils.showSnackBar("Entrer votre mot de passe, minimum 8 caractères."); 
+      } else if (e.message == "The password is invalid or the user does not have a password."){ 
+        Utils.showSnackBar("Mot de passe invalide."); 
+      } else {
+        Utils.showSnackBar(e.message);
+      }
     }
   }
   
@@ -114,13 +124,3 @@ class AuthController with ChangeNotifier {
     close();
   }
 }
-
-// if (e.message == 'There is no user record corresponding to this identifier. The user may have been deleted.'){ 
-//         Utils.showSnackBar("Email inconnu dans la base de donnée où l'utilsateur a été supprimer. Veuiller créer un compte."); 
-//       } else if (e.message == "The email address is badly formatted."){ 
-//         Utils.showSnackBar("Email invalide, veuillez entrer un email au bon format."); 
-//       } else if (e.message == "Given String is empty or null"){ 
-//         Utils.showSnackBar("Entrer votre mot de passe, minimum 8 caractères."); 
-//       } else if (e.message == "The password is invalid or the user does not have a password."){ 
-//         Utils.showSnackBar("Mot de passe invalide."); 
-//       } else {

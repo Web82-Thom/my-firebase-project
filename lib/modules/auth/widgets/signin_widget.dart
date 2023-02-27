@@ -130,8 +130,7 @@ class _SigninWidgetState extends State<SigninWidget> {
               child: Container(
                 child: GestureDetector(
                   onTap: () {
-                    // Get.toNamed(Routes.FORGOT_PASSWORD);
-                    print('forgot');
+                    Get.toNamed(Routes.FORGOT_PASSWORD);
                   },
                   child: Text(
                     'Mot de passe oublié ?',

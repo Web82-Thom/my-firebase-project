@@ -77,12 +77,19 @@ class _HomeViewState extends State<HomeView> {
         ],
       ),
       // drawer: CustomDrawer(),
-      body: Center(
-        child: 
-        user!.email != null  ?
-        Text('Hello ${user!.email} !'): 
-        Text('Hello inconnue !')
-        ),
+      body: FutureBuilder(
+        future: authController.checkEmailVerified(),
+        builder: (context, snapshot) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Hello, ${auth.currentUser!.email}!'),
+              ],
+            )
+          );
+        }
+      ),
     );
   }
 }

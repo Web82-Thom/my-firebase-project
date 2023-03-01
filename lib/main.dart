@@ -9,6 +9,7 @@ import 'package:myfirebaseproject/modules/auth/widgets/signin_widget.dart';
 import 'package:myfirebaseproject/modules/auth/widgets/signup_widget.dart';
 import 'package:myfirebaseproject/modules/auth/widgets/verify_email_view.dart';
 import 'package:myfirebaseproject/modules/home/views/home_view.dart';
+import 'package:myfirebaseproject/modules/profil/views/profile_view.dart';
 import 'package:myfirebaseproject/ressources/widgets/snackBar_auth.dart';
 import 'package:myfirebaseproject/ressources/widgets/splash_screen.dart';
 import 'package:myfirebaseproject/routes/app_pages.dart';
@@ -70,6 +71,7 @@ class MyApp extends StatelessWidget {
         "/signup": (context) =>  SignupWidget(),
         "/forgot_password": (context) => ForgotPassword(),
         "/verify_email": (context) => VerifyEmailView(),
+        "/profile": (context) => ProfileView(),
       },
     );
   }

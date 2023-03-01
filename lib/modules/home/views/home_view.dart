@@ -15,6 +15,7 @@ class HomeView extends StatefulWidget {
   FirebaseAuth auth = FirebaseAuth.instance;
   AuthController authController = AuthController();
   final user = FirebaseAuth.instance.currentUser;
+  String? indexUser = user!.uid;
 
 class _HomeViewState extends State<HomeView> {
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -66,8 +67,7 @@ class _HomeViewState extends State<HomeView> {
             ],
             onChanged: (itemIdentifier) {
               if (itemIdentifier == 'profil') {
-                // Get.toNamed(Routes.PROFILE);
-                // authController.userSignOut();
+                Get.toNamed(Routes.PROFILE,);
               }
               else if (itemIdentifier == 'logout') {
                 authController.signOut();
@@ -85,9 +85,7 @@ class _HomeViewState extends State<HomeView> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text('Hello, ${auth.currentUser!.email}!'),
-                TextButton(onPressed: (){
-                  authController.deleteUser();
-                }, child: Text('Delete user'))
+                
               ],
             )
           );

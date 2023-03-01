@@ -62,7 +62,9 @@ class AuthController extends ChangeNotifier {
       await auth.signInWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
-      );
+      ).whenComplete(() {
+          readUser();
+        });
     } on FirebaseAuthException catch (e) {
       print(e);
       if (e.message == 'There is no user record corresponding to this identifier. The user may have been deleted.') {
@@ -135,7 +137,7 @@ class AuthController extends ChangeNotifier {
 
   //READ ONE USER
   Future<UserModel?> readUser() async {
-    final docUser = FirebaseFirestore.instance.doc(auth.currentUser!.uid);
+    final docUser = FirebaseFirestore.instance.collection("users").doc(auth.currentUser!.uid);
     final snapshot = await docUser.get();
     if (snapshot.exists){
       return UserModel.fromJson(snapshot.data()!);

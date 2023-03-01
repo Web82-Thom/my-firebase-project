@@ -5,6 +5,7 @@ import 'package:myfirebaseproject/modules/auth/widgets/signin_widget.dart';
 import 'package:myfirebaseproject/modules/auth/widgets/signup_widget.dart';
 import 'package:myfirebaseproject/modules/auth/widgets/verify_email_view.dart';
 import 'package:myfirebaseproject/modules/home/views/home_view.dart';
+import 'package:myfirebaseproject/modules/profil/views/profile_view.dart';
 
 
 
@@ -44,6 +45,11 @@ class AppPages {
     GetPage(
       name: _Paths.VERIFY_EMAIL,
       page: () => VerifyEmailView(),
+      // binding: AuthBinding(),
+    ),
+    GetPage(
+      name: _Paths.PROFILE,
+      page: () => ProfileView(),
       // binding: AuthBinding(),
     ),
   ];

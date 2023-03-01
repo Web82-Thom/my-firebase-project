@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
 import 'package:myfirebaseproject/modules/auth/views/auth_view.dart';
+import 'package:myfirebaseproject/modules/auth/widgets/forgot_password.dart';
 import 'package:myfirebaseproject/modules/auth/widgets/signin_widget.dart';
 import 'package:myfirebaseproject/modules/auth/widgets/signup_widget.dart';
+import 'package:myfirebaseproject/modules/auth/widgets/verify_email_view.dart';
 import 'package:myfirebaseproject/modules/home/views/home_view.dart';
 
 
@@ -32,6 +34,16 @@ class AppPages {
     GetPage(
       name: _Paths.SIGNIN,
       page: () => SigninWidget(),
+      // binding: AuthBinding(),
+    ),
+    GetPage(
+      name: _Paths.FORGOT_PASSWORD,
+      page: () => ForgotPassword(),
+      // binding: AuthBinding(),
+    ),
+    GetPage(
+      name: _Paths.VERIFY_EMAIL,
+      page: () => VerifyEmailView(),
       // binding: AuthBinding(),
     ),
   ];

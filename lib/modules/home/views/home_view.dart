@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
+import 'package:myfirebaseproject/modules/auth/controllers/auth_controllers.dart';
 import 'package:myfirebaseproject/routes/app_pages.dart';
 
 class HomeView extends StatefulWidget {
@@ -11,14 +12,18 @@ class HomeView extends StatefulWidget {
   @override
   State<HomeView> createState() => _HomeViewState();
 }
+  FirebaseAuth auth = FirebaseAuth.instance;
+  AuthController authController = AuthController();
+  final user = FirebaseAuth.instance.currentUser;
 
 class _HomeViewState extends State<HomeView> {
   FirebaseAuth auth = FirebaseAuth.instance;
-
+  final user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text("Thom App's"),
         actions: [
           DropdownButton(
@@ -65,16 +70,26 @@ class _HomeViewState extends State<HomeView> {
                 // authController.userSignOut();
               }
               else if (itemIdentifier == 'logout') {
-                Get.toNamed(Routes.AUTH);
-                // authController.userSignOut();
+                authController.signOut();
               }
             },
           ),
         ],
       ),
       // drawer: CustomDrawer(),
-      body: Center(child: Text('Hello')),
-      // CardHome(),
+      body: FutureBuilder(
+        future: authController.checkEmailVerified(),
+        builder: (context, snapshot) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Hello, ${auth.currentUser!.email}!'),
+              ],
+            )
+          );
+        }
+      ),
     );
   }
 }

@@ -14,7 +14,7 @@ abstract class Routes {
   static const WELCOME = _Paths.WELCOME;
   static const PROFILE = _Paths.PROFILE;
   static const PROFILE_FORM = _Paths.PROFILE_FORM;
-  static const VERIFICATION_EMAIL = _Paths.VERIFICATION_EMAIL;
+  static const VERIFY_EMAIL = _Paths.VERIFY_EMAIL;
   static const FORGOT_PASSWORD = _Paths.FORGOT_PASSWORD;
 
   static const EVENTS = _Paths.EVENTS;
@@ -49,7 +49,7 @@ abstract class _Paths {
 
   static const WELCOME = '/welcome';
   static const PROFILE_FORM = '/profile_form';
-  static const VERIFICATION_EMAIL = '/verification_email';
+  static const VERIFY_EMAIL = '/verification_email';
   static const FORGOT_PASSWORD = '/forgot_password';
 
   static const EVENTS = '/events';

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:myfirebaseproject/modules/auth/controllers/auth_controllers.dart';
+import 'package:myfirebaseproject/modules/home/views/home_view.dart';
 import 'package:myfirebaseproject/routes/app_pages.dart';
 
 import 'package:uuid/uuid.dart';
@@ -219,7 +220,11 @@ class _SignupWidgetState extends State<SignupWidget> {
                 print(authController.passwordController.text);
                 // print(authController.confirmPasswordController.text);
                 final isValid = _formKey.currentState!.validate();
-                authController.signUp();
+                authController.signUp(
+                  name: '',
+                  email: authController.emailController.text,
+                  password: authController.passwordController.text,
+                );
 
                 // if (_userImageFile != null) {
                 //   // authController.userSignUp(

@@ -13,6 +13,9 @@ import 'package:myfirebaseproject/ressources/widgets/snackBar_auth.dart';
 import 'package:myfirebaseproject/ressources/widgets/splash_screen.dart';
 import 'package:myfirebaseproject/routes/app_pages.dart';
 
+import 'package:myfirebaseproject/modules/auth/models/user_model.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
 class AuthController extends ChangeNotifier {
   FirebaseAuth auth = FirebaseAuth.instance;
   bool isSignUp = false;
@@ -24,6 +27,9 @@ class AuthController extends ChangeNotifier {
   bool isEmailVerified = false;
   Timer? timer;
   User? user;
+
+  firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+  CollectionReference usersCollection = FirebaseFirestore.instance.collection("users");
 
   @override
   void initState() {
@@ -78,12 +84,25 @@ class AuthController extends ChangeNotifier {
     Get.toNamed(Routes.AUTH);
   }
 
-  Future signUp() async {
+  Future signUp({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
     try {
       await auth.createUserWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
       ).whenComplete((){ 
+        user = auth.currentUser;
+        usersCollection
+        .doc(user!.uid)
+        .set(UserModel(
+          id: user!.uid,
+          email: email,
+          name: name,
+        ).toMap(),);
+
         userState(); 
       });
     } on FirebaseAuthException catch (e) {
@@ -112,6 +131,15 @@ class AuthController extends ChangeNotifier {
         }
       }
     }
+  }
+
+  //READ ONE USER
+  Future<UserModel?> readUser() async {
+    final docUser = FirebaseFirestore.instance.doc(auth.currentUser!.uid);
+    final snapshot = await docUser.get();
+    if (snapshot.exists){
+      return UserModel.fromJson(snapshot.data()!);
+    } return null;
   }
 
   Future  deleteUser()async{

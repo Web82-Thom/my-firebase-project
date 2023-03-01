@@ -7,6 +7,7 @@ import 'package:myfirebaseproject/modules/auth/views/auth_view.dart';
 import 'package:myfirebaseproject/modules/auth/widgets/forgot_password.dart';
 import 'package:myfirebaseproject/modules/auth/widgets/signin_widget.dart';
 import 'package:myfirebaseproject/modules/auth/widgets/signup_widget.dart';
+import 'package:myfirebaseproject/modules/auth/widgets/verify_email_view.dart';
 import 'package:myfirebaseproject/modules/home/views/home_view.dart';
 import 'package:myfirebaseproject/ressources/widgets/snackBar_auth.dart';
 import 'package:myfirebaseproject/ressources/widgets/splash_screen.dart';
@@ -48,7 +49,6 @@ class MyApp extends StatelessWidget {
         Locale('en, En'), // Français, no country code
       ],
       debugShowCheckedModeBanner: false,
-      
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (ctx, userSnapshot) {
@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
           } else if (userSnapshot.hasError){
             return const Center(child:Text('Une erreur est intervenue !'));
           } if (userSnapshot.hasData) {
-            return HomeView();
+            return VerifyEmailView();
           } else{
             return const AuthView();
           }
@@ -69,6 +69,7 @@ class MyApp extends StatelessWidget {
         "/signin": (context) =>  SigninWidget(),
         "/signup": (context) =>  SignupWidget(),
         "/forgot_password": (context) => ForgotPassword(),
+        "/verify_email": (context) => VerifyEmailView(),
       },
     );
   }

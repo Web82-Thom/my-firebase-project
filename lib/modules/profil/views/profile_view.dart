@@ -11,6 +11,12 @@ import 'package:intl/intl.dart';
 import 'package:myfirebaseproject/modules/auth/controllers/auth_controllers.dart';
 import 'package:myfirebaseproject/modules/auth/models/user_model.dart';
 import 'package:myfirebaseproject/modules/auth/views/auth_view.dart';
+import 'package:myfirebaseproject/modules/profil/views/controllers/profile_controller.dart';
+import 'package:myfirebaseproject/modules/profil/views/widgets/custom_text_field.dart';
+import 'package:myfirebaseproject/ressources/constants/styles.dart';
+import 'package:myfirebaseproject/ressources/dialogues/dialog_cancel_button.dart';
+import 'package:myfirebaseproject/ressources/dialogues/dialog_confirm_button.dart';
+import 'package:myfirebaseproject/routes/app_pages.dart';
 import 'package:provider/provider.dart';
 
 class ProfileView extends StatefulWidget {
@@ -23,8 +29,8 @@ class ProfileView extends StatefulWidget {
 Color _color1 = Color(0xFF07ac12);
 Color _color2 = Color(0xff777777);
 Color _color3 = Color(0xFF515151);
-
-// ProfilController profilController = ProfilController();
+FirebaseAuth auth = FirebaseAuth.instance;
+ProfileController profileController = ProfileController();
 TextEditingController _usernameField = TextEditingController();
 TextEditingController _emailField = TextEditingController();
 class _ProfileViewState extends State<ProfileView> {
@@ -38,6 +44,10 @@ class _ProfileViewState extends State<ProfileView> {
         appBar: AppBar(
           title: const Text("Mon profil"),
           centerTitle: true,
+          automaticallyImplyLeading: false,
+          leading: IconButton(onPressed: () {
+            Get.toNamed(Routes.HOME);
+          },icon: Icon(Icons.arrow_back) ),
         ),
         body: Column(
           children: [
@@ -110,7 +120,6 @@ class _ProfileViewState extends State<ProfileView> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
-                        // mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                          const SizedBox(height: 40.0,),
@@ -135,6 +144,34 @@ class _ProfileViewState extends State<ProfileView> {
                                   style: const TextStyle(fontSize: 16, color: Colors.black),
                                 ) ,
                               ),
+                              ///==========USERNAME==========///
+                              GestureDetector(
+                                onTap: () {
+                                  Get.defaultDialog(
+                                    title: "Modifier le nom d'utilisateur",
+                                    content: CustomTextField(
+                                        controller: _usernameField,
+                                        labelText: "Nom d'utilisateur",
+                                        isObscure: false),
+                                    cancel: const DialogCancelButton(),
+                                    confirm: DialogConfirmButton(
+                                      onPressed: () {
+                                        profileController.updateUsername(
+                                            id: user.id.toString(),
+                                            username: _usernameField.text);
+                                        _usernameField.clear();
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  );
+                                },
+                                child: Text('Edit',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: _color1,
+                                    )),
+                              )
                             ],
                           ),
                           const SizedBox(height: 8.0,),
@@ -155,20 +192,71 @@ class _ProfileViewState extends State<ProfileView> {
                                   style: const TextStyle(fontSize: 16, color: Colors.black),
                                 ),
                               ),
+                              ///=============EMAIL=============///
+                              GestureDetector(
+                                onTap: () {
+                                  Get.defaultDialog(
+                                    title: "Modifier l'email",
+                                    content: CustomTextField(
+                                        controller: _emailField,
+                                        labelText: "Email",
+                                        isObscure: false),
+                                    cancel: const DialogCancelButton(),
+                                    confirm: DialogConfirmButton(
+                                      onPressed: () {
+                                        profileController.updateEmail(
+                                            id: user.id.toString(),
+                                            email: _emailField.text);
+                                        _emailField.clear();
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  );
+                                },child: Text('Edit',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: _color1,
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                           const SizedBox(height: 15,),
-                          TextButton(onPressed: (){
-                            authController.deleteUser();
-                          }, child: Text('Delete user'))
+                          Padding(
+                            padding: const EdgeInsets.all(28.0),
+                            child: Center(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Get.defaultDialog(
+                                    title: "ATTENTION !",
+                                    middleText:
+                                    "Toute suppression de compte est définitive. Souhaitez-vous supprimer votre compte ?",
+                                    cancel: const DialogCancelButton(),
+                                    confirm: DialogConfirmButton(
+                                      onPressed: () => authController.deleteUser()
+                                    ),
+                                  );
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(Colors.red),
+                                ),
+                                child: Text(
+                                  "Supprimer le compte",
+                                  style: whiteBoldText,
+                                ),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
                   ],
                 );
-              } return const Center(child: CircularProgressIndicator());
-                
-            }))
+              } return const Center(
+                child: CircularProgressIndicator(),
+              );
+            })),
           ],
         ),
       ),

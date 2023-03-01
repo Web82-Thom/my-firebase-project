@@ -1,23 +1,16 @@
 import 'dart:async';
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:myfirebaseproject/main.dart';
 import 'package:myfirebaseproject/ressources/widgets/snackBar_auth.dart';
-import 'package:myfirebaseproject/ressources/widgets/splash_screen.dart';
 import 'package:myfirebaseproject/routes/app_pages.dart';
 
 import 'package:myfirebaseproject/modules/auth/models/user_model.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class AuthController extends ChangeNotifier {
-  FirebaseAuth auth = FirebaseAuth.instance;
   bool isSignUp = false;
   bool isLogin = false;
 
@@ -28,12 +21,14 @@ class AuthController extends ChangeNotifier {
   Timer? timer;
   User? user;
 
+  FirebaseAuth auth = FirebaseAuth.instance;
   firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
   CollectionReference usersCollection = FirebaseFirestore.instance.collection("users");
 
   @override
   void initState() {
     userState();
+    readUser();
     isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
     notifyListeners();
     initState();
@@ -63,8 +58,8 @@ class AuthController extends ChangeNotifier {
         email: emailController.text,
         password: passwordController.text,
       ).whenComplete(() {
-          readUser();
-        });
+        readUser();
+      });
     } on FirebaseAuthException catch (e) {
       print(e);
       if (e.message == 'There is no user record corresponding to this identifier. The user may have been deleted.') {
@@ -141,13 +136,16 @@ class AuthController extends ChangeNotifier {
     final snapshot = await docUser.get();
     if (snapshot.exists){
       return UserModel.fromJson(snapshot.data()!);
-    } return null;
+    } return Utils.showSnackBar('erreur');
   }
 
-  Future  deleteUser()async{
-   
-  await auth.currentUser!.delete().whenComplete(() => Get.toNamed(Routes.AUTH));
-
+  Future deleteUser() async{
+    await usersCollection.doc(auth.currentUser!.uid)
+    .delete()
+    .whenComplete(() { 
+      auth.currentUser!.delete();
+      Get.toNamed(Routes.AUTH);
+    },);
   }
 
   @override

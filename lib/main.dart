@@ -69,9 +69,9 @@ class MyApp extends StatelessWidget {
         "/auth": (context) => const AuthView(),
         "/signin": (context) =>  SigninWidget(),
         "/signup": (context) =>  SignupWidget(),
-        "/forgot_password": (context) => ForgotPassword(),
+        "/forgot_password": (context) => const ForgotPassword(),
         "/verify_email": (context) => VerifyEmailView(),
-        "/profile": (context) => ProfileView(),
+        "/profile": (context) => const ProfileView(),
       },
     );
   }

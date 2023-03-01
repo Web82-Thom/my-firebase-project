@@ -85,6 +85,9 @@ class _HomeViewState extends State<HomeView> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text('Hello, ${auth.currentUser!.email}!'),
+                TextButton(onPressed: (){
+                  authController.deleteUser();
+                }, child: Text('Delete user'))
               ],
             )
           );

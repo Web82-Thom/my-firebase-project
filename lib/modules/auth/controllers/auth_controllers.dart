@@ -114,6 +114,12 @@ class AuthController extends ChangeNotifier {
     }
   }
 
+  Future  deleteUser()async{
+   
+  await auth.currentUser!.delete().whenComplete(() => Get.toNamed(Routes.AUTH));
+
+  }
+
   @override
   void dispose() {
     emailController.dispose();

@@ -14,6 +14,7 @@ class AuthController extends ChangeNotifier {
   bool isSignUp = false;
   bool isLogin = false;
 
+  final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 

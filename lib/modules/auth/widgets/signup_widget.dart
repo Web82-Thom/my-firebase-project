@@ -74,36 +74,34 @@ class _SignupWidgetState extends State<SignupWidget> {
               style: TextStyle(
                   fontSize: 14, fontWeight: FontWeight.bold, color: _mainColor),
             ),
-            // TextFormField(
-            //   key: ValueKey('userName'),
-            //   controller: _nameField,
-            //   keyboardType: TextInputType.text,
-            //   style: TextStyle(color: _color1),
-            //   decoration: InputDecoration(
-            //     focusedBorder: UnderlineInputBorder(
-            //         borderSide: BorderSide(color: _mainColor, width: 2.0)),
-            //     enabledBorder: UnderlineInputBorder(
-            //       borderSide: BorderSide(color: _underlineColor),
-            //     ),
-            //     labelText: "Nom d'utilisateur",
-            //     labelStyle: TextStyle(color: _color2),
-            //   ),
-            //   validator: (value) {
-            //     if (value!.isEmpty || value.length < 4) {
-            //       return 'Minimum 4 caractères';
-            //     }
-            //     return null;
-            //   },
-            //   onSaved: (value) {
-            //     setState(() {
-            //       _nameField = value as TextEditingController;
-            //       // authController.newUserUsername = value!;
-            //     });
-            //   },
-            // ),
-            // SizedBox(
-            //   height: 20,
-            // ),
+            TextFormField(
+              key: ValueKey('userName'),
+              controller: authController.nameController,
+              keyboardType: TextInputType.text,
+              style: TextStyle(color: _color1),
+              decoration: InputDecoration(
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: _mainColor, width: 2.0)),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: _underlineColor),
+                ),
+                labelText: "Nom d'utilisateur",
+                labelStyle: TextStyle(color: _color2),
+              ),
+              validator: (value) {
+                if (value!.isEmpty || value.length < 4) {
+                  return 'Minimum 4 caractères';
+                }return null;
+              },
+              onSaved: (value) {
+                setState(() {
+                  authController.nameController.text = value! ;
+                });
+              },
+            ),
+            SizedBox(
+              height: 20,
+            ),
            
             TextFormField(
               key: ValueKey('emailController'),
@@ -221,7 +219,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                 // print(authController.confirmPasswordController.text);
                 final isValid = _formKey.currentState!.validate();
                 authController.signUp(
-                  name: '',
+                  name: authController.nameController.text,
                   email: authController.emailController.text,
                   password: authController.passwordController.text,
                 );

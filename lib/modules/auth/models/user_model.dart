@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
@@ -11,7 +13,8 @@ class UserModel {
     "email": email,
     "id": id,
     "username": name ?? "NoName",
-    "url": url ?? "users/profile.png",
+    // "url": url ?? "assets/images/profile.png",
+    "url": url,
   };
 
   UserModel.fromMap(DocumentSnapshot data) {

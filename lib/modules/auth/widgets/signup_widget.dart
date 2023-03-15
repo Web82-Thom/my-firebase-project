@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:myfirebaseproject/modules/auth/controllers/auth_controllers.dart';
 import 'package:myfirebaseproject/modules/home/views/home_view.dart';
+import 'package:myfirebaseproject/ressources/widgets/image_loader_widget.dart';
+import 'package:myfirebaseproject/ressources/widgets/user_image_picker.dart';
 import 'package:myfirebaseproject/routes/app_pages.dart';
 
 import 'package:uuid/uuid.dart';
@@ -17,7 +19,8 @@ class SignupWidget extends StatefulWidget {
 class _SignupWidgetState extends State<SignupWidget> {
   AuthController authController = Get.put(AuthController());
 
-  File? _userImageFile;
+  File? userImageFile;
+
   bool _obscureText = true;
   IconData _iconVisible = Icons.visibility_off;
   final _formKey = GlobalKey<FormState>();
@@ -40,12 +43,14 @@ class _SignupWidgetState extends State<SignupWidget> {
     });
   }
 
-  // void _pickedImage(File image) {
-  //   setState(() {
-  //     authController.userImageFile = image;
-  //     _userImageFile = image;
-  //   });
-  // }
+  void _pickedImage(File image) {
+    setState(() {
+      userImageFile = image;
+      authController.image = image;
+      print("userImageFile = $userImageFile");
+      print("authController.image = ${authController.image}");
+    });
+  }
 
   @override
   void initState() {
@@ -65,7 +70,10 @@ class _SignupWidgetState extends State<SignupWidget> {
         child: ListView(
           padding: EdgeInsets.fromLTRB(30, 120, 30, 30),
           children: <Widget>[
-            // Center(child: UserImagePicker(_pickedImage)),
+            Center(
+              child: 
+              UserImagePicker(_pickedImage)
+            ),
             SizedBox(
               height: 40,
             ),
@@ -164,43 +172,6 @@ class _SignupWidgetState extends State<SignupWidget> {
               },
             ),
             SizedBox(height: 20,),
-            // TextFormField(
-            //   key: ValueKey('Confirmer le mot de passe'),
-            //   controller: authController.confirmPasswordController,
-            //   obscureText: _obscureText,
-            //   style: TextStyle(color: _color1),
-            //   decoration: InputDecoration(
-            //     focusedBorder: UnderlineInputBorder(
-            //         borderSide: BorderSide(color: _mainColor, width: 2.0)),
-            //     enabledBorder: UnderlineInputBorder(
-            //       borderSide: BorderSide(color: _underlineColor),
-            //     ),
-            //     labelText: 'Confirmer le mot de passe',
-            //     labelStyle: TextStyle(color: _color2),
-            //     suffixIcon: IconButton(
-            //         icon: Icon(_iconVisible, color: Colors.grey[400], size: 20),
-            //         onPressed: () {
-            //           _toggleObscureText();
-            //         }),
-            //   ),
-            //   validator: (value) {
-            //     if (value!.isEmpty || value.length < 7 ) {
-            //       return 'Mot de passe trop court (7 min)';
-            //     }
-            //     if (value == authController.emailController.text) {
-            //       return 'Mot de passe non identique';
-            //     }
-            //     return null;
-            //   },
-            //   onSaved: (value) {
-            //     setState(() {
-            //       authController.confirmPasswordController.text = value!;
-            //     });
-            //   },
-            // ),
-            SizedBox(
-              height: 40,
-            ),
             TextButton(
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.resolveWith<Color>(
@@ -218,29 +189,29 @@ class _SignupWidgetState extends State<SignupWidget> {
                 print(authController.passwordController.text);
                 // print(authController.confirmPasswordController.text);
                 final isValid = _formKey.currentState!.validate();
-                authController.signUp(
-                  name: authController.nameController.text,
-                  email: authController.emailController.text,
-                  password: authController.passwordController.text,
-                );
+                // authController.signUp(
+                //   name: authController.nameController.text,
+                //   email: authController.emailController.text,
+                //   password: authController.passwordController.text,
+                // );
 
-                // if (_userImageFile != null) {
-                //   // authController.userSignUp(
-                //   //   name: _nameField.text,
-                //   //   email: _emailField.text,
-                //   //   password: _passwordField.text,
-                //   //   userImageUrl: _userImageFile!,
-                //   // );
-                // } else {
-                //   Get.snackbar(
-                //     "Attention",
-                //     "Veuillez prendre une photo !",
-                //     snackPosition: SnackPosition.BOTTOM,
-                //     backgroundColor: Colors.grey[500],
-                //     duration: Duration(seconds: 3),
-                //   );
-                //   return;
-                // }
+                if (userImageFile != null) {
+                  authController.signUp(
+                    name: authController.nameController.text,
+                    email: authController.emailController.text,
+                    password: authController.passwordController.text,
+                    url: userImageFile!.path,
+                  );
+                } else {
+                  Get.snackbar(
+                    "Attention",
+                    "Veuillez prendre une photo !",
+                    snackPosition: SnackPosition.BOTTOM,
+                    backgroundColor: Colors.grey[500],
+                    duration: Duration(seconds: 3),
+                  );
+                  return;
+                }
               },
               child: const Padding(
                 padding: EdgeInsets.symmetric(vertical: 5),
@@ -283,5 +254,9 @@ class _SignupWidgetState extends State<SignupWidget> {
         ),
       ),
     );
+  
   }
+
+ 
 }
+ 

@@ -14,14 +14,18 @@ class ProfileController with ChangeNotifier{
 
   void updateUsername({required String id, required String username}) {
     try {
-      usersCollection.doc(id).update({
+      usersCollection
+      .doc(id)
+      .update({
         "username": username,
       }).whenComplete(() {
         authController.readUser();
+        Get.snackbar(
+          "Modification réussie",
+          "Votre nom d'utilisateur a bien été modifiée !", 
+          snackPosition: SnackPosition.BOTTOM,
+        );
         notifyListeners();
-        Get.snackbar("Modification réussie",
-            "Votre nom d'utilisateur a bien été modifiée !",
-            snackPosition: SnackPosition.BOTTOM);
       });
     } catch (e) {
       Utils.showSnackBar(e.toString());

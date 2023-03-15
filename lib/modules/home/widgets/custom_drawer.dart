@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myfirebaseproject/modules/auth/controllers/auth_controllers.dart';
 import 'package:myfirebaseproject/modules/auth/models/user_model.dart';
+import 'package:myfirebaseproject/ressources/widgets/image_loader_widget.dart';
 import 'package:myfirebaseproject/routes/app_pages.dart';
 
 
@@ -33,9 +34,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     return UserAccountsDrawerHeader(
                       accountName: Text(user!.name.toString()),
                       accountEmail: Text(user.email.toString()),
-                      // currentAccountPicture: ImageLoaderWidget(url: authController.tempUser["url"], isCircular: true),
+                      currentAccountPicture: ImageLoaderWidget(url:user.url.toString(), isCircular: true),
                     );
-                    } return const CircularProgressIndicator();
+                    } return const CircularProgressIndicator(); 
+                    
                     
                   }
                 ),

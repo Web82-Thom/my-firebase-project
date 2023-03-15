@@ -4,22 +4,32 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:myfirebaseproject/modules/auth/controllers/auth_controllers.dart';
+import 'package:myfirebaseproject/modules/auth/models/user_model.dart';
+import 'package:myfirebaseproject/modules/home/widgets/custom_drawer.dart';
+import 'package:myfirebaseproject/modules/profil/views/profile_view.dart';
 import 'package:myfirebaseproject/routes/app_pages.dart';
 
 class HomeView extends StatefulWidget {
-  HomeView({super.key});
+  const HomeView({super.key});
 
   @override
   State<HomeView> createState() => _HomeViewState();
 }
   FirebaseAuth auth = FirebaseAuth.instance;
   AuthController authController = AuthController();
-  final user = FirebaseAuth.instance.currentUser;
-  String? indexUser = user!.uid;
+  // final user = FirebaseAuth.instance.currentUser;
+  // String? indexUser = user!.uid;
+
+@override
+  void initState() {
+    authController.readUser();
+    initState();
+  }
 
 class _HomeViewState extends State<HomeView> {
   FirebaseAuth auth = FirebaseAuth.instance;
   final user = FirebaseAuth.instance.currentUser;
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,19 +86,29 @@ class _HomeViewState extends State<HomeView> {
           ),
         ],
       ),
-      // drawer: CustomDrawer(),
+      drawer: CustomDrawer(),
       body: FutureBuilder(
         future: authController.checkEmailVerified(),
         builder: (context, snapshot) {
           return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Hello, ${auth.currentUser!.email}!'),
+            child: FutureBuilder<UserModel?>(
+              future: authController.readUser(),
+              builder: (context, snapshot) {
+                if(snapshot.hasData){
+                  final user = snapshot.data;
+                  return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Hello, ${auth.currentUser!.email}!'),
+                        Text('Hello, ${user!.name.toString()}!'),
+                  
+                      ],
+                    );
+                } return CircularProgressIndicator();
                 
-              ],
+              }
             )
-          );
+              );
         }
       ),
     );
